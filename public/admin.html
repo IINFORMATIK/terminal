@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .image-list {
+            margin-top: 20px;
+        }
+        .image-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .image-item img {
+            max-width: 100px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Админ-панель</h1>
+
+        <!-- Форма для добавления нового изображения -->
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="form-group" style="display: flex; align-items: center;">
+                <label for="sliderInterval" style="margin-right: 10px;">Интервал перелистывания слайдов (в миллисекундах):</label>
+                <input type="number" class="form-control" id="sliderInterval" name="sliderInterval" value="5000" min="1000" step="1000" style="width: 150px; margin-right: 10px;">
+                <button id="applyInterval" class="btn btn-primary">Применить</button>
+            </div>
+            <div class="form-group">
+                <label for="imageUpload">Выберите изображение для слайдера:</label>
+                <input type="file" class="form-control" id="imageUpload" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Добавить изображение</button>
+        </form>
+
+        <!-- Список добавленных изображений -->
+        <div class="image-list" id="imageList">
+            <h3>Добавленные изображения:</h3>
+            <!-- Список будет заполняться динамически -->
+        </div>
+
+        <div id="statusMessage" class="mt-3"></div>
+    </div>
+
+    <script>
+        const imageList = document.getElementById('imageList');
+
+        // Функция для загрузки списка изображений
+        function loadImages() {
+            fetch('/uploads')
+                .then(response => response.json())
+                .then(data => {
+                    imageList.innerHTML = '<h3>Добавленные изображения:</h3>';
+                    data.forEach(image => {
+                        const imageItem = document.createElement('div');
+                        imageItem.className = 'image-item';
+
+                        const img = document.createElement('img');
+                        img.src = image.filePath;
+                        img.alt = 'Слайдер изображение';
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Удалить';
+                        deleteButton.className = 'btn btn-danger btn-sm';
+                        deleteButton.onclick = () => deleteImage(image.filePath);
+
+                        imageItem.appendChild(img);
+                        imageItem.appendChild(deleteButton);
+                        imageList.appendChild(imageItem);
+                    });
+                })
+                .catch(error => console.error('Ошибка загрузки изображений:', error));
+        }
+
+        // Функция для удаления изображения
+        function deleteImage(filePath) {
+            fetch('/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ filePath })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Изображение успешно удалено:', filePath);
+                        loadImages();
+                    } else {
+                        console.error('Ошибка при удалении изображения:', data.message);
+                    }
+                })
+                .catch(error => console.error('Ошибка удаления изображения:', error));
+        }
+
+        // Обработчик формы для добавления нового изображения
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('imageUpload');
+
+            if (fileInput.files.length === 0) {
+                alert('Пожалуйста, выберите изображение.');
+                return;
+            }
+
+            formData.append('image', fileInput.files[0]);
+
+            console.log('Отправка изображения на сервер...');
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Изображение успешно загружено:', data.filePath);
+                        loadImages();
+                    } else {
+                        console.error('Ошибка при добавлении изображения:', data.message);
+                    }
+                })
+                .catch(error => console.error('Ошибка загрузки изображения:', error));
+        });
+
+        // Функция для применения интервала перелистывания
+        document.getElementById('applyInterval').addEventListener('click', function() {
+            const interval = document.getElementById('sliderInterval').value;
+            localStorage.setItem('sliderInterval', interval);
+            alert(`Интервал перелистывания установлен на ${interval} мс`);
+        });
+
+        // Установка интервала по умолчанию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedInterval = localStorage.getItem('sliderInterval') || 5000;
+            document.getElementById('sliderInterval').value = savedInterval;
+        });
+
+        // Загрузка списка изображений при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Загрузка списка изображений...');
+            loadImages();
+        });
+    </script>
+</body>
+</html>
