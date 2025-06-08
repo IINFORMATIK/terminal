@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - INSTALL_GIT=true
     ports:
       - "3000:3000"
     volumes:
