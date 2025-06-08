@@ -13,29 +13,29 @@
 	<!-- <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet"> -->
 	
 	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
+	<link rel="stylesheet" href="/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="/css/icomoon.css">
 	<!-- Themify Icons-->
-	<link rel="stylesheet" href="css/themify-icons.css">
+	<link rel="stylesheet" href="/css/themify-icons.css">
 	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="/css/bootstrap.css">
 	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="css/magnific-popup.css">
+	<link rel="stylesheet" href="/css/magnific-popup.css">
 	
 	<!-- Owl Carousel  -->
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/css/owl.theme.default.min.css">
 	<!-- Flexslider -->
-	<link rel="stylesheet" href="css/flexslider.css">
+	<link rel="stylesheet" href="/css/flexslider.css">
 	<!-- Theme style  -->
 	
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="/css/style.css">
 	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
+	<script src="/js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
+	<script src="/js/respond.min.js"></script>
 	<![endif]-->
 	<!--Start Блок для времени-->
 	<script>
@@ -59,21 +59,26 @@
 		if (day == 7) DayofWeek = "Суббота";
 		</script>
 		
-		<script>
-		setInterval(function() {
-		var cd = new Date();
-		var clockdat = document.getElementById("clockdat");
-		clockdat.innerHTML = cd.toLocaleTimeString();
-		}, 1000);
-		</script>
 	<!--Finish Блок для времени-->
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<style>
+		body, #page {
+			background: #fff !important;
+			color: #000 !important;
+		}
+		* {
+			visibility: visible !important;
+			opacity: 1 !important;
+		}
+	</style>
 	</head>
 	<body>
 
 	
 	<div id="page">
 	<nav class="ubea-nav" role="navigation">
-		
+		<!-- Здесь только навигация, если есть -->
+	</nav>
 	<div class="ubea-section2" id="ubea-services" >
 			<div class="ubea-container-time text-center" >
 					<span style="color:rgb(106, 38, 151); font-size:24px;">Сегодня:
@@ -94,38 +99,48 @@
 				</iframe>
 			</div>
 		</div>
-		
-    </div>
+	</div>
 	<div class="ubea-section" id="ubea-portfolio" data-section="portfolio" >
 		<div class="ubea-container" style = "padding-left: 15px" >
 			<a href="school.html" target="myiframe"><img src="images/m1.png" width = "225" alt="..." class="img-rounded" style = "padding-right: 5px"></a>
 			<a href="home.html" target="myiframe"><img src="images/m2.png" width = "225" alt="..." class="img-rounded" style = "padding-right: 5px"></a>
-			<a href="student.html" target="myiframe"><img src="images/m3.png" width = "225" alt="..." class="img-rounded" style = "padding-right: 5px"></a>
+			<a href="Student.html" target="myiframe"><img src="images/m3.png" width = "225" alt="..." class="img-rounded" style = "padding-right: 5px"></a>
 		</div>
 	</div>
 	
 	</div>
     
 	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
+	<!-- <script src="/js/jquery.min.js"></script> -->
 	<!-- jQuery Easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- <script src="/js/jquery.easing.1.3.js"></script> -->
 	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
+	<!-- <script src="/js/bootstrap.min.js"></script> -->
 	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- <script src="/js/jquery.waypoints.min.js"></script> -->
 	<!-- Carousel -->
-	<script src="js/owl.carousel.min.js"></script>
+	<!-- <script src="/js/owl.carousel.min.js"></script> -->
 	<!-- countTo -->
-	<script src="js/jquery.countTo.js"></script>
+	<!-- <script src="/js/jquery.countTo.js"></script> -->
 	<!-- Flexslider -->
-	<script src="js/jquery.flexslider-min.js"></script>
+	<!-- <script src="/js/jquery.flexslider-min.js"></script> -->
 	<!-- Magnific Popup -->
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/magnific-popup-options.js"></script>
+	<!-- <script src="/js/jquery.magnific-popup.min.js"></script> -->
+	<!-- <script src="/js/magnific-popup-options.js"></script> -->
 	<!-- Main -->
-	<script src="js/main.js"></script>
-	
+	<!-- <script src="/js/main.js"></script> -->
+	<script>
+	// Переносим обновление часов после загрузки DOM
+	document.addEventListener('DOMContentLoaded', function() {
+		setInterval(function() {
+			var cd = new Date();
+			var clockdat = document.getElementById("clockdat");
+			if (clockdat) {
+				clockdat.innerHTML = cd.toLocaleTimeString();
+			}
+		}, 1000);
+	});
+	</script>
 	</body>
 </html>
 

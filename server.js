@@ -6,6 +6,12 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = 3000;
 
+// Создать папку для изображений при запуске, если не существует
+const uploadDir = path.join(__dirname, 'data', 'news');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 // Настройка базы данных SQLite
 const db = new sqlite3.Database('images.db', (err) => {
     if (err) {
@@ -38,10 +44,7 @@ const upload = multer({ storage });
 // Middleware для обработки
 app.use(express.json());
 
-// Статическая папка для изображений
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Настройка для обслуживания статических файлов
+// Настройка для обслуживания статических файлов (ОБЯЗАТЕЛЬНО ДО роутов!)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Настройка для обслуживания папки с изображениями
